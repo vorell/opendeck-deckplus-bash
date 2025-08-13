@@ -40,3 +40,4 @@ There are four scripts, one for each knob. I know a monolithic script with param
  > **Dial rotate:** ~/.scripts/foc-app-adjust-pa.sh %d
  5. The app-adjust-pa.sh requires two parameters, the second being the application name in pulseaudio:
  > **Dial down:** ~/scripts/app-adjust-pa.sh toggle discord
+ 6. If you want text output on the LCD checkmark "Show on key:"
