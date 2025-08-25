@@ -17,6 +17,7 @@ There are four scripts, one for each knob. I know a monolithic script with param
  - jq
  - sed
  - head
+ - sort
 
 ## Usage
  1. Download the scripts and place them someplace memorable. ie: ~/scripts/ or ~/.scripts/ 
