@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 function get_volume () {
-    CURVOL=$(pactl -fjson list sources | jq '.[]|select(.properties[]).volume.[].value_percent' | sed 's/[^0-9]//g' | head -1)
+    CURVOL=$(pactl -fjson list sources | jq '.[]|select(.properties[]).volume.[].value_percent' | sed 's/[^0-9]//g' | sort -n | head -1)
     CURVOLPER="$CURVOL""%"
     if [[ ($1 == "out") ]]; then
         echo "$CURVOLPER"
@@ -30,10 +30,12 @@ if [[ ($1 == "toggle") ]]
     fi
 elif [[ ($1 -lt 0) ]]
     then for i in $SRCSERIALS; do
+        pactl set-source-volume "$i" "$CURVOLPER"
         pactl set-source-volume "$i" "$1%"
     done
 elif [ $(($CURVOL)) -lt 100 ]
     then for i in $SRCSERIALS; do
+        pactl set-source-volume "$i" "$CURVOLPER"
         pactl set-source-volume "$i" +"$1%"
     done
 fi
