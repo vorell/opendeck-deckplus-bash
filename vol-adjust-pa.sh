@@ -1,11 +1,10 @@
 #!/bin/bash
-#
 SNKSERIALS=$(pactl -fjson list sinks | jq '.[].index')
 CURMUTE=$(pactl -fjson list sinks | jq '.[].mute')
 ALLTRUE="true"  # Assume all are true initially
 
 function get_volume () {
-    CURVOL=$(pactl -fjson list sinks | jq '.[]|select(.properties[]).volume.[].value_percent' | sed 's/[^0-9]//g' | head -1)
+    CURVOL=$(pactl -fjson list sinks | jq '.[]|select(.properties[]).volume.[].value_percent' | sed 's/[^0-9]//g' | sort -n | head -1)
     CURVOLPER="$CURVOL""%"
     if [[ ($1 == "out") ]]; then
         echo "$CURVOLPER"
@@ -30,12 +29,15 @@ if [[ ($1 == "toggle") ]]
     else
         echo "off"
     fi
+
 elif [[ ($1 -lt 0) ]]
     then for i in $SNKSERIALS; do
+        pactl set-sink-volume "$i" "$CURVOLPER"
         pactl set-sink-volume "$i" "$1%"
     done
 elif [ $(($CURVOL)) -lt 100 ]
     then for i in $SNKSERIALS; do
+        pactl set-sink-volume "$i" "$CURVOLPER"
         pactl set-sink-volume "$i" +"$1%"
     done
 fi
